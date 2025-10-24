@@ -2,14 +2,13 @@ import express from 'express'
 import jwt from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
 import bcrypt from 'bcryptjs'
+// import router from './posts'
 
-const app = express()
-const PORT = process.env.PORT || 5001
 const prisma = new PrismaClient()
-app.use(express.json())
+const router = express.Router()
 
 // Đăng ký
-app.post("/api/auth/register", async (req, res) => {
+router.post("/register", async (req, res) => {
     const { name, password, email } = req.body
     try {
         const existing = await prisma.user.findUnique({ where: { email } })
@@ -27,7 +26,7 @@ app.post("/api/auth/register", async (req, res) => {
 })
 
 // Đăng nhập
-app.post("/api/auth/login", async (req, res) => {
+router.post("/login", async (req, res) => {
     const { email, password } = req.body
     try {
         const user = await prisma.user.findUnique({ where: { email } })
@@ -49,11 +48,10 @@ app.post("/api/auth/login", async (req, res) => {
             token,
             user: { id: user.id, name: user.name, email: user.email, role: user.role }
         })
+
+        console.log(`User ${user.email} logged in successfully.`)
     } catch (error) {
         res.status(500).json({ error: "Server error" })
     }
 })
-
-// app.listen(PORT, () => {
-//     console.log(`http://localhost:${PORT}`)
-// })
+export default router

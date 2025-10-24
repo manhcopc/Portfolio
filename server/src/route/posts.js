@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import express from 'express'
-import { requireAuth, requireAdmin } from '../middleware/auth'
+import { requireAuth, requireAdmin } from '../middleware/auth.js'
 
 const app = express()
 const prisma = new PrismaClient()
-app.use(experss.json())
+app.use(express.json()) // Fixed typo in 'express.json()'
 const router = express.Router()
 
 router.get('/', async (req, res) => {
@@ -25,7 +25,7 @@ router.get('/:slug', async (req, res) => {
         return res.status(400).json({error: `System error!`})
     }
 })
-router.post('/', requireAuth, requireAdmin, async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
     const { title, slug, content, published } = req.body
     try {
         const post = await prisma.post.create({data: {title, slug, content, published, authorId: req.user.id}})

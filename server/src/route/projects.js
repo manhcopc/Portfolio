@@ -35,10 +35,11 @@ router.post('/', async (req, res) => {
   try {
     const { name, description, tags, githubUrl, demoUrl } = req.body
     const project = await prisma.project.create({
-      data: { name, description, tags, githubUrl, demoUrl },
+      data: { name, description, tags: tags || [], githubUrl, demoUrl },
     })
     res.status(201).json(project)
   } catch (error) {
+    console.error('Error creating project:', error)
     res.status(500).json({ error: 'Error creating project!' })
   }
 })

@@ -13,7 +13,7 @@ function requireAuth(req, res, next) {
         req.user = payload
         next()
     } catch {
-        req.status(401).json("Invalid token!")
+        res.status(401).json("Invalid token!")
     }
 }
 function requireAdmin(req, res, next) {
@@ -22,3 +22,5 @@ function requireAdmin(req, res, next) {
     } 
     next()
 }
+
+export { requireAuth, requireAdmin }

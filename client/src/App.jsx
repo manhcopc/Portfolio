@@ -2,29 +2,29 @@ import "./App.css";
 import Blog from "./pages/Blog";
 import BlogDetail from "./pages/BlogDetail";
 import Projects from "./pages/Projects";
-import {
-  BrowserRouter,
-  NavLink,
-  NavBar,
-  Route,
-  Routes,
-} from "react-router-dom";
+import About from "./pages/About";
+import MainContent from "./components/MainContent";
+import AdminLogin from "./pages/admin/Login";
+import Dashboard from "./pages/admin/Dashboard";
+import ProjectsManager from "./pages/admin/ProjectManager";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { BrowserRouter, NavLink, Route, Routes } from "react-router";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <NavBar className="flex gap-4 p-4 bg-gray-100">
-          <NavLink to="/">About</NavLink>
-          <NavLink to="/projects">Projects</NavLink>
-          <NavLink to="/blog">Blog</NavLink>
-        </NavBar>
-
         <Routes>
-          <Route path="/" element={<About />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogDetail />} />{" "}
+          <Route element={<MainContent />}>
+            <Route path="/" element={<About />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />{" "}
+          </Route>
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/admin/projects" element={<ProtectedRoute><ProjectsManager /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </>
